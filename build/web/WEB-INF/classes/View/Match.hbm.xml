@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14/05/2018 02:53:48 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class catalog="db_match" name="View.Match" optimistic-lock="version" table="match">
+    <id name="idmatch" type="java.lang.Integer">
+      <column name="idmatch"/>
+      <generator class="identity"/>
+    </id>
+    <property name="matchName" type="string">
+      <column length="45" name="match_name"/>
+    </property>
+    <property name="date" type="timestamp">
+      <column length="19" name="date"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="tickets" table="ticket">
+      <key>
+        <column name="match_idmatch" not-null="true"/>
+      </key>
+      <one-to-many class="View.Ticket"/>
+    </set>
+  </class>
+</hibernate-mapping>
