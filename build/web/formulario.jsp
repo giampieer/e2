@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <%!
     String dni = null;
     String zone = null;
     String price = null;
+    String code = null;
 %>
 <%
+    code = (String) request.getAttribute("code");
     dni = (String) request.getAttribute("dni");
     zone = (String) request.getAttribute("zone");
     price = (String) request.getAttribute("price");
@@ -42,6 +44,11 @@
                         <span class="login100-form-title p-b-43">
                             Comprar Ticket
                         </span>
+                        <div class="wrap-input100 validate-input" data-validate = "Ingrese Codigo">
+                            <input class="input100" type="number" name="code" id="code" value="<%=code%>" disabled>
+                            <span class="focus-input100"></span>
+                            <span class="label-input100"></span>
+                        </div>
                         <div class="wrap-input100 validate-input" data-validate = "Ingrese Dni">
                             <input class="input100" type="number" name="dni" id="dni" value="<%=dni%>" disabled>
                             <span class="focus-input100"></span>

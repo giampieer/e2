@@ -16,10 +16,11 @@ function refresh(){
     document.getElementById('pago').value = precio;
 }
 function  EventAlert(ruta){
-    var bank,rutatotal, dni,posicion1,pago,nombank,abrev,zona;
+    var bank,rutatotal, dni,posicion1,pago,nombank,abrev,zona,code;
     posicion1=document.getElementById('posicion1').value;
     bank=document.getElementById('bank').value;
     zona=document.getElementById('zone').value;
+    code=document.getElementById('code').value;
     pago=document.form.pago.value;
     dni=document.form.dni.value;
      var response = grecaptcha.getResponse();
@@ -58,11 +59,13 @@ function  EventAlert(ruta){
       } else{
       var f = new Date();
       var fecha = f.getDate() + "" + (f.getMonth() +1) + "" + f.getFullYear();
-      var correlativo =abrev+" - 000001 - "+fecha;
-      alert("TU NUMERO AUTOGENERADO ES : \n"+ abrev+"-000001-"+fecha)
-      rutatotal =ruta+"/PaymentController?op=3&zona="+zona+"&pago="+pago+"&dni="+dni+"&correlativo="+correlativo;
+      var correlativo =abrev+" - "+code+" - "+fecha;
+            alert (ruta+"/PaymentController?op=3&zona="+zona+"&pago="+pago+"&dni="+dni+"&correlativo="+correlativo+"&bank="+bank)
+
+      alert("TU NUMERO AUTOGENERADO ES : \n"+ abrev+" - "+code+" - "+fecha)
+      rutatotal =ruta+"/PaymentController?op=3&zona="+zona+"&pago="+pago+"&dni="+dni+"&correlativo="+correlativo+"&bank="+bank;
       document.form.action=rutatotal;
-      document.form.method="POST";
+      document.form.method="POST";  
       swal("Compra Realizada !", "El pago sera reaizado en el banco seleccionado", "success");
       alertify.success('Compra Realizada !!');
       document.form.submit();

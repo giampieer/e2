@@ -15,7 +15,7 @@ public class TicketDAO {
             Session session;
             session = sesion.openSession();
             Transaction tx = session.beginTransaction();
-            session.save(obj);
+            session.persist(obj);
             tx.commit();
             session.close();
             sesion.close();
@@ -31,7 +31,7 @@ public class TicketDAO {
             Session session;
             session = sesion.openSession();
             code = session.createQuery("SELECT COUNT(*) FROM Ticket").uniqueResult().hashCode();
-            code++;
+            //code++;
             session.close();
             sesion.close();
         } catch (HibernateException e) {
