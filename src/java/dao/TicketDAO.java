@@ -23,17 +23,26 @@ public class TicketDAO {
             e.printStackTrace();
         }
     }
+    
+    public int generateCode(){
+        int code = 0;
+        try {
+            SessionFactory sesion = dao.NewHibernateUtil.getSessionFactory();
+            Session session;
+            session = sesion.openSession();
+            code = session.createQuery("SELECT COUNT(*) FROM Ticket").uniqueResult().hashCode();
+            code++;
+            session.close();
+            sesion.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return code;
+    }
        
     public static void main(String[] args) {
         TicketDAO obj = new TicketDAO();
-        Match match = new Match();
-        match.setIdmatch(1);
-        Ticket ticket = new Ticket();
-        ticket.setDni("98977656");
-        ticket.setZone("lima");
-        ticket.setPrice(Float.parseFloat("3"));
-        ticket.setMatch(match);
-        ticket.setCorrelative("sadas");
-        obj.buyTicket(ticket);  
+        //int code = obj.generateCode();
+        System.out.println(""+obj.generateCode());
     }
 }
