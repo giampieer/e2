@@ -32,8 +32,10 @@
         <link rel="stylesheet" href="assets/css/animate.min.css">
         <!-- Custom styles for this template -->
         <link href="assets/css/main.css" rel="stylesheet">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+         <script src='assets/js/ajax123.js'></script>
     </head>
-    <body>
+    <body onload="Message()">
         <div class="loader">
             <div class="loader-outter"></div>
             <div class="loader-inner"></div>

@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.ehcache.hibernate.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -73,18 +74,15 @@ public class PaymentController extends HttpServlet {
                 match.setIdmatch(1);
                 ticketv.setMatch(match);
                 try {
-            SessionFactory sesion = NewHibernateUtil.getSessionFactory();
-            Session session;
-            session = sesion.openSession();
-            Transaction tx = session.beginTransaction();
-            session.save(ticketv);
-            tx.commit();
-            session.close();
-            sesion.close();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
+                    Session sesion = NewHibernateUtil.getSessionFactory().openSession();
+                    sesion.persist(ticketv);
+                    sesion.beginTransaction().commit();
+                    sesion.close();
+                } catch (HibernateException e) {
+                    e.printStackTrace();
+                }
                 pagina="/index.jsp";
+                break;
             }
         }
         getServletContext().getRequestDispatcher(pagina).forward(request, response);
