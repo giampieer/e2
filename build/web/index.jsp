@@ -33,7 +33,7 @@
         <!-- Custom styles for this template -->
         <link href="assets/css/main.css" rel="stylesheet">
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-         <script src='assets/js/ajax123.js'></script>
+         <script src='assets/js/ajax1235.js'></script>
     </head>
     <body onload="Message()">
         <div class="loader">

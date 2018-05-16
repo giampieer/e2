@@ -4,8 +4,13 @@
  * and open the template in the editor.
  */
 package Controller;
+
+import DAO.PaymentDAO;
+import DAO.TicketDAO;
+import View.Bank;
 import dao.NewHibernateUtil;
 import View.Match;
+import View.Payment;
 import View.Ticket;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,8 +44,8 @@ public class PaymentController extends HttpServlet {
         String opcad = request.getParameter("op");
         int op = Integer.parseInt(opcad);
         String pagina = "";
-        switch(op){
-            case 1:{
+        switch (op) {
+            case 1: {
                 //String dni = request.getParameter("dni");
                 String zone = request.getParameter("zone");
                 String price = request.getParameter("price");
@@ -50,22 +55,34 @@ public class PaymentController extends HttpServlet {
                 pagina = "/formulario1.jsp";
                 break;
             }
-            case 2:{
+            case 2: {
+                int code=0;
                 String dni = request.getParameter("dni");
                 String zone = request.getParameter("zone");
-                String price = request.getParameter("price");
-                request.setAttribute("dni", dni);
+                String price = request.getParameter("price");  
+                 try {
+                    Session session = NewHibernateUtil.getSessionFactory().openSession();
+                    session.beginTransaction().commit();
+                     code = session.createQuery("SELECT COUNT(*) FROM Ticket").uniqueResult().hashCode();
+                    code++;
+                    session.beginTransaction().commit();
+                    session.close();
+                } catch (Exception e) {
+                }
+                  request.setAttribute("code", String.valueOf(code));
+                  request.setAttribute("dni", dni);
                 request.setAttribute("zone", zone);
                 request.setAttribute("price", price);
                 pagina = "/formulario.jsp";
                 break;
             }
             case 3: {
-                 String dni = request.getParameter("dni");
+                String dni = request.getParameter("dni");
                 String soles1 = request.getParameter("pago");
                 String zona = request.getParameter("zona");
                 String correlative = request.getParameter("correlativo");
-                Ticket ticketv =new Ticket();
+                int bank = Integer.parseInt(request.getParameter("bank"));
+                Ticket ticketv = new Ticket();
                 ticketv.setDni(dni);
                 ticketv.setZone(zona);
                 ticketv.setPrice(Float.parseFloat(soles1));
@@ -73,15 +90,26 @@ public class PaymentController extends HttpServlet {
                 Match match = new Match();
                 match.setIdmatch(1);
                 ticketv.setMatch(match);
+                //Rgistro de payment
+                Bank bankv = new Bank();
+                bankv.setIdbank(bank);
+                Payment paymentv = new Payment();
                 try {
-                    Session sesion = NewHibernateUtil.getSessionFactory().openSession();
-                    sesion.persist(ticketv);
-                    sesion.beginTransaction().commit();
-                    sesion.close();
-                } catch (HibernateException e) {
-                    e.printStackTrace();
+                    Session session = NewHibernateUtil.getSessionFactory().openSession();
+                    session.persist(ticketv);
+                    session.beginTransaction().commit();
+                    int code = session.createQuery("SELECT COUNT(*) FROM Ticket").uniqueResult().hashCode();
+                    paymentv.setIdpayment(correlative);
+                    ticketv.setIdticket(code);
+                    paymentv.setTicket(ticketv);
+                    paymentv.setBank(bankv);
+                    session.persist(paymentv);
+                    session.beginTransaction().commit();
+                    session.close();
+                } catch (Exception e) {
                 }
-                pagina="/index.jsp";
+
+                pagina = "/index.jsp";
                 break;
             }
         }

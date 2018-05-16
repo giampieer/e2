@@ -36,7 +36,7 @@ public class Payment  implements java.io.Serializable {
      @Id 
 
     
-    @Column(name="idpayment", unique=true, nullable=false, length=11)
+    @Column(name="idpayment", unique=true, nullable=false, length=25)
     public String getIdpayment() {
         return this.idpayment;
     }
